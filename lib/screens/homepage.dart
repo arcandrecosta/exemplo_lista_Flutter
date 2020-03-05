@@ -39,17 +39,50 @@ class _HomePageState extends State<HomePage> {
                       break;
                     case ConnectionState.done:
                       if (snapshot.hasData) {
-                        
                         final List<Post> listaPosts = snapshot.data;
                         return Expanded(
                           child: ListView.builder(
                             itemCount: listaPosts.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Icon(Icons.album),
-                                title: Text(listaPosts[index].person.name),
-                                subtitle: Text(
-                                    'Music by Julie Gable. Lyrics by Sidney Stein.'),
+                              return Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            listaPosts[index]
+                                                .person
+                                                .profilePhotoUri),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text(listaPosts[index].person.name,style: TextStyle(
+                                        fontSize: 20,
+                                        color:Colors.grey[700]
+                                      ),),
+                                    ],
+                                  ),
+                                   SizedBox(
+                                       height: 10,
+                                      ),
+                                  Image.network(
+                                    listaPosts[index].photoUri,
+                                    fit: BoxFit.fill,
+                                    height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Icon(Icons.star),
+                                      Text(listaPosts[index].likes.toString())
+                                    ],
+                                  ),
+                                   SizedBox(
+                                       height: 10,
+                                      ),
+                                ],
                               );
                             },
                           ),
