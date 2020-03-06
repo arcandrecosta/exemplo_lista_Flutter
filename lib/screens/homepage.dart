@@ -1,7 +1,10 @@
 import 'package:devpictures/controller/controller.dart';
 import 'package:devpictures/model/post.dart';
+import 'package:devpictures/screens/feed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +22,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("teste"),
+        elevation: 0,
+        backgroundColor: Color(0xFFEEEEEE),
+        brightness: Brightness.light,
+        centerTitle: true,
+        title: Text(
+          "Instagram",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Feather.camera,
+            color: Colors.black,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              FontAwesome.send_o,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
       body: Container(
         child: Column(
@@ -27,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             FutureBuilder(
                 initialData: List(),
-                future: findAll.getPosts(),
+                future: findAll.getPosts(),                
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
@@ -43,71 +71,20 @@ class _HomePageState extends State<HomePage> {
                         return Expanded(
                           child: ListView.builder(
                             itemCount: listaPosts.length,
+                             shrinkWrap: true,                             
                             itemBuilder: (context, index) {
-                              return Column(
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            listaPosts[index]
-                                                .person
-                                                .profilePhotoUri),
-                                      ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Text(listaPosts[index].person.name,style: TextStyle(
-                                        fontSize: 20,
-                                        color:Colors.grey[700]
-                                      ),),
-                                    ],
-                                  ),
-                                   SizedBox(
-                                       height: 10,
-                                      ),
-                                  Image.network(
-                                    listaPosts[index].photoUri,
-                                    fit: BoxFit.fill,
-                                    height: 200,
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      Icon(Icons.star),
-                                      Text(listaPosts[index].likes.toString())
-                                    ],
-                                  ),
-                                   SizedBox(
-                                       height: 10,
-                                      ),
-                                ],
-                              );
+                              return Feed(post: listaPosts[index],);
                             },
                           ),
                         );
-                      } else {
-                        return Container(
-                          color: Colors.red,
-                        );
-                      }
+                      } 
                       break;
+
                     default:
+                    return Container();
                   }
                 }),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: const Text('BUY TICKETS'),
-                  onPressed: () {/* ... */},
-                ),
-                FlatButton(
-                  child: const Text('LISTEN'),
-                  onPressed: () {/* ... */},
-                ),
-              ],
-            ),
+           
           ],
         ),
 
